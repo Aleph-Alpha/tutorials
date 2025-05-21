@@ -1,0 +1,18 @@
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "~=3.11"
+requests = "^2.32.3"
+aiohttp = "^3.10.5"
+urllib3 = "^2.2.2"
+pandas = "2.1.4"
+tenacity = "^8.2.2"
+python-dotenv = "^1.0.0"
+ipykernel = "^6.29.5"
+intelligence-layer = {git = "https://github.com/Aleph-Alpha/intelligence-layer-sdk.git", python = ">=3.10,<3.13"}
+pharia-skill = "^0.14.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
