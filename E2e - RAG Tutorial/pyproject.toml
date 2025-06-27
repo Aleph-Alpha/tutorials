@@ -1,19 +1,22 @@
-[tool.poetry]
-package-mode = false
+[project]
+name = "rag-tutorial"
+version = "0.1.0"
+description = "RAG Application Tutorial with PhariaAI"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "requests>=2.32.3",
+    "aiohttp>=3.10.5",
+    "urllib3>=2.2.2",
+    "pandas>=2.1.4",
+    "tenacity>=8.2.2",
+    "python-dotenv>=1.0.0",
+    "ipykernel>=6.29.5",
+    "pharia-skill>=0.16.6",
+    "jinja2>=3.1.6",
+    "aleph-alpha-client>=7.1.0",
+    "jupyter>=1.0.0",
+    "intelligence-layer",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11,<3.13"
-requests = "^2.32.3"
-aiohttp = "^3.10.5"
-urllib3 = "^2.2.2"
-pandas = "^2.1.4"
-tenacity = "^8.2.2"
-python-dotenv = "^1.0.0"
-ipykernel = "^6.29.5"
-intelligence-layer = {git = "https://github.com/Aleph-Alpha/intelligence-layer-sdk.git"}
-pharia-skill = "^0.14.2"
-jinja2 = "^3.1.6"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv.sources]
+intelligence-layer = { git = "https://github.com/Aleph-Alpha/intelligence-layer-sdk.git" }
