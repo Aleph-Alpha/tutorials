@@ -15,7 +15,10 @@ dependencies = [
     "jinja2>=3.1.6",
     "aleph-alpha-client>=7.1.0",
     "jupyter>=1.0.0",
-    "intelligence-layer",
+    "pharia-inference-sdk>=0.1.6",
+    "pharia-studio-sdk>=0.1.5",
+    "pharia-data-sdk>=0.1.3"
+
 ]
 
 [tool.uv.sources]
