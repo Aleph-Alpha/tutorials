@@ -15,6 +15,7 @@ class Input(BaseModel):
 
 class Output(BaseModel):
     answer: str | None
+    sources: list[str] | None
 
 
 @skill
@@ -42,4 +43,5 @@ Question: {input.question}
     message = Message.user(content)
     params = ChatParams(max_tokens=512)
     response = csi.chat("llama-3.1-8b-instruct", [message], params)
-    return Output(answer=response.message.content)
+    sources = [d.document_path.name for d in documents]
+    return Output(answer=response.message.content, sources=sources)
