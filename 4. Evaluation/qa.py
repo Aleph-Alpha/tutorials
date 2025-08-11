@@ -15,7 +15,7 @@ class Input(BaseModel):
 
 class Output(BaseModel):
     answer: str | None
-    sources: list[str] | None
+    sources: list[str] | None = None
 
 
 @skill
