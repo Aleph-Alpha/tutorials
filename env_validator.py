@@ -7,7 +7,12 @@ from dotenv import load_dotenv, dotenv_values
 def mask_sensitive_value(var_name: str, value: str) -> str:
     """Mask sensitive values for display."""
     if "TOKEN" in var_name:
-        return value[:8] + "..." if len(value) > 8 else "***"
+        if len(value) > 8:
+            first_chars = value[:8]
+            last_chars = value[-8:]
+            return f"{first_chars}...{last_chars}"
+        else:
+            return "***"
     return value
 
 
