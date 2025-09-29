@@ -1,0 +1,58 @@
+[project]
+name = "test_vsp_2-service"
+license = "Apache-2.0"
+version = "0.1.0"
+authors = [{ name = "Aleph Alpha Engineering", email = "engineering@aleph-alpha.com" }]
+description = "Service template"
+
+requires-python = "~=3.12"
+
+dependencies = [
+    "fastapi==0.115.8",
+    "uvicorn==0.34.0",
+    "httpx==0.28.1",
+    "pydantic==2.11.7",
+    "pydantic-settings==2.7.1",
+    "python-multipart==0.0.18"
+]
+
+[dependency-groups]
+dev = [
+    "mypy==1.14.1",
+    "pre-commit==4.1.0",
+    "pylama[toml]==8.4.1",
+    "pytest==8.3.4",
+    "types-setuptools==80.9.0.20250822",
+    "setuptools==78.1.1",
+    "pytest-asyncio==1.2.0",
+    "ruff==0.9.4"
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/service"]
+
+[tool.hatch.build.targets.wheel]
+include = ["src/service"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/service" = "service"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pylama]
+skip = ".cache/*,*/__init__.py,.venv/*,.venv/*"
+ignore = "E501,E203"
+
+[tool.pylama.linter.pycodestyle]
+# https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#pycodestyle
+max_line_length = 88
+ignore = "E203,E701,E704,W503"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+[project.scripts]
+dev = "service.main:main"
+validate_settings = "service.validate_settings:main"

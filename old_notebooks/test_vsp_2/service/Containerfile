@@ -1,0 +1,48 @@
+FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8 AS build-image
+
+# Install needed tools
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y pipx && \
+    rm -r /var/lib/apt/lists/*
+
+# Install and setup uv
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/root/.local/bin:$PATH"
+
+RUN pipx install uv
+
+# Configure the Python directory so it is consistent
+ENV UV_PYTHON_INSTALL_DIR=/python
+
+# Only use the managed Python version
+ENV UV_PYTHON_PREFERENCE=only-managed
+
+# Install Python before the project for caching
+RUN uv python install 3.12
+
+COPY pyproject.toml uv.lock README.md ./
+COPY ./src ./src
+RUN uv sync --frozen
+
+FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8
+
+COPY --from=build-image /app/.venv /app/.venv
+COPY --from=build-image /python /python
+
+# Setup
+WORKDIR /app
+
+ENV PATH="/app/.venv/bin:/root/.local/bin:$PATH"
+
+COPY ./src ./src
+COPY ./ui-artifacts ./ui-artifacts
+
+USER 2024:2024
+
+EXPOSE 8080
+
+# Command to run the application
+CMD ["uvicorn", "src.service.main:app", "--host", "0.0.0.0", "--port", "8080"]
