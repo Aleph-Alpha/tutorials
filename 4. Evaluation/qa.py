@@ -26,8 +26,13 @@ def custom_rag(csi: Csi, input: Input) -> Output:
         index=input.index,
     )
 
-    if not (documents := csi.search(index, input.question, 3, 0.5)):
+    if not (documents := csi.search(index, input.question, 3, 0.3)):
         return Output(answer=None)
+
+    document_paths = [document.document_path for document in documents]
+    document_names = [
+        d.metadata.get("fileName", "Unknown") for d in csi.documents(document_paths)
+    ]
 
     context = "\n".join([d.content for d in documents])
     content = f"""Using the provided context documents below, answer the following question.
@@ -43,5 +48,4 @@ Question: {input.question}
     message = Message.user(content)
     params = ChatParams(max_tokens=512)
     response = csi.chat("llama-3.1-8b-instruct", [message], params)
-    sources = [d.document_path.name for d in documents]
-    return Output(answer=response.message.content, sources=sources)
+    return Output(answer=response.message.content, sources=list(set(document_names)))
